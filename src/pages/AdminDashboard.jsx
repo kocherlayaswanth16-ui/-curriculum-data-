@@ -101,12 +101,12 @@ function AdminDashboard() {
   );
 
   const tabs = [
-    { id: 'overview', name: '📊 Smart Dashboard', icon: '📈' },
-    { id: 'users', name: '👥 User Management', icon: '👤' },
-    { id: 'departments', name: '🏛️ Departments', icon: '🏢' },
-    { id: 'events', name: '📅 Events & Alerts', icon: '🔔' },
-    { id: 'settings', name: '⚙️ System Settings', icon: '🛠️' },
-    { id: 'ai-insights', name: '🤖 AI Strategy', icon: '💡' },
+    { id: 'overview', name: 'Smart Dashboard', icon: '📈' },
+    { id: 'users', name: 'User Management', icon: '👤' },
+    { id: 'departments', name: 'Departments', icon: '🏢' },
+    { id: 'events', name: 'Events & Alerts', icon: '🔔' },
+    { id: 'settings', name: 'System Settings', icon: '🛠️' },
+    { id: 'ai-insights', name: 'AI Strategy', icon: '💡' },
   ];
 
   const handleToggle = (category, setting) => {

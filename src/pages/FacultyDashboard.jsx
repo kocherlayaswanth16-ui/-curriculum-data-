@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import ChartBox from '../components/ChartBox.jsx';
 import StatCard from '../components/StatCard.jsx';
 
@@ -43,17 +43,19 @@ const interventionStudents = [
 ];
 
 function FacultyDashboard() {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'overview';
+  const [activeTab, setActiveTab] = useState(initialTab);
 
   const tabs = [
-    { id: 'overview', label: '📊 Overview', icon: '📈' },
-    { id: 'subjects', label: '📚 My Subjects', icon: '📖' },
-    { id: 'attendance', label: '✅ Attendance', icon: '📝' },
-    { id: 'marks', label: '🎯 Marks & Evaluation', icon: '🏆' },
-    { id: 'assignments', label: '📁 Assignments', icon: '📎' },
-    { id: 'interaction', label: '💬 Interaction', icon: '📩' },
-    { id: 'activities', label: '🏅 Activities', icon: '🎭' },
-    { id: 'syllabus', label: '🤖 AI Syllabus Updater', icon: '✨' },
+    { id: 'overview', label: 'Overview', icon: '📊' },
+    { id: 'subjects', label: 'My Subjects', icon: '📖' },
+    { id: 'attendance', label: 'Attendance', icon: '📝' },
+    { id: 'marks', label: 'Marks & Evaluation', icon: '🏆' },
+    { id: 'assignments', label: 'Assignments', icon: '📁' },
+    { id: 'interaction', label: 'Interaction', icon: '💬' },
+    { id: 'activities', label: 'Activities', icon: '🏅' },
+    { id: 'syllabus', label: 'AI Syllabus Updater', icon: '🤖' },
   ];
 
   return (
@@ -74,7 +76,10 @@ function FacultyDashboard() {
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => {
+              setActiveTab(tab.id);
+              setSearchParams({ tab: tab.id });
+            }}
             className={`flex-1 rounded-xl px-4 py-3 text-sm font-semibold transition-all min-w-[150px] flex items-center justify-center gap-2 ${
               activeTab === tab.id
                 ? 'bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-lg shadow-sky-500/20'

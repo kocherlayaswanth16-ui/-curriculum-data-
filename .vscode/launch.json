@@ -1,6 +1,4 @@
-cd "c:\Users\koche\OneDrive\Documents\student curcularm"
-npm.cmd run devcd "c:\Users\koche\OneDrive\Documents\student curcularm\backend"
-python run.py{
+{
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
@@ -10,7 +8,7 @@ python run.py{
             "type": "chrome",
             "request": "launch",
             "name": "Launch Curriculum Analytics Website",
-            "url": "http://localhost:5174",
+            "url": "http://localhost:5173",
             "preLaunchTask": "Run Full Project",
             "webRoot": "${workspaceFolder}"
         }

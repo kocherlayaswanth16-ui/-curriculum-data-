@@ -221,3 +221,46 @@ class LearningActivity(db.Model):
     score = db.Column(db.Float)
     difficulty = db.Column(db.Enum('beginner', 'intermediate', 'advanced'))
     completed_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class SystemEvent(db.Model):
+    __tablename__ = 'system_events'
+
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(100), nullable=False)  # info, warning, error, success
+    category = db.Column(db.String(100))  # security, academic, system, user
+    message = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relationships
+    user = db.relationship('User', backref='system_events')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'type': self.type,
+            'category': self.category,
+            'message': self.message,
+            'user_id': self.user_id,
+            'user_name': self.user.name if self.user else 'System',
+            'created_at': self.created_at.isoformat()
+        }
+
+class SystemSetting(db.Model):
+    __tablename__ = 'system_settings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.String(100), unique=True, nullable=False)
+    value = db.Column(db.JSON, nullable=False)
+    category = db.Column(db.String(100))  # security, UI, api, academic
+    description = db.Column(db.String(300))
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            'key': self.key,
+            'value': self.value,
+            'category': self.category,
+            'description': self.description,
+            'updated_at': self.updated_at.isoformat()
+        }

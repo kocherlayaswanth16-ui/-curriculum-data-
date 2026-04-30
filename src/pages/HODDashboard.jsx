@@ -121,14 +121,14 @@ function HODDashboard() {
   ]);
 
   const tabs = [
-    { id: 'overview', label: '📊 Overview', icon: '📈' },
-    { id: 'curriculum', label: '📚 Curriculum & Skills', icon: '📝' },
-    { id: 'faculty', label: '👨‍🏫 Faculty Control', icon: '🧑‍💼' },
-    { id: 'students', label: '🎓 Student Monitoring', icon: '🔍' },
-    { id: 'timetable', label: '📅 Timetable Mgt', icon: '⏰' },
-    { id: 'approvals', label: '✅ Approvals', icon: '✔️' },
-    { id: 'trends', label: '🔮 Predictive Trends', icon: '✨' },
-    { id: 'placements', label: '💼 Placement Hub', icon: '🚀' },
+    { id: 'overview', label: 'Overview', icon: '📊' },
+    { id: 'curriculum', label: 'Curriculum & Skills', icon: '📚' },
+    { id: 'faculty', label: 'Faculty Control', icon: '👨‍🏫' },
+    { id: 'students', label: 'Student Monitoring', icon: '🎓' },
+    { id: 'timetable', label: 'Timetable Mgt', icon: '📅' },
+    { id: 'approvals', label: 'Approvals', icon: '✅' },
+    { id: 'trends', label: 'Predictive Trends', icon: '🔮' },
+    { id: 'placements', label: 'Placement Hub', icon: '💼' },
   ];
 
   return (

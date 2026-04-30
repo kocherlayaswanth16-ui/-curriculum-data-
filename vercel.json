@@ -1,5 +1,20 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build"
+    },
+    {
+      "src": "backend/run.py",
+      "use": "@vercel/python"
+    }
+  ],
   "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "backend/run.py"
+    },
     {
       "source": "/(.*)",
       "destination": "/index.html"

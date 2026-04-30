@@ -64,6 +64,35 @@ function StudentDashboard() {
     { name: 'SQL', level: 'Beginner', progress: 40 },
   ]);
 
+  // --- Jobs State ---
+  const [recommendedJobs, setRecommendedJobs] = useState([
+    { title: 'Frontend Developer Intern', company: 'Google', tags: ['React', 'CSS'], salary: '$120k' },
+    { title: 'Cloud Associate', company: 'Amazon', tags: ['AWS', 'Linux'], salary: '$140k' },
+    { title: 'AI Research Assistant', company: 'NVIDIA', tags: ['Python', 'ML'], salary: '$110k' },
+  ]);
+  const [isLoadingJobs, setIsLoadingJobs] = useState(false);
+
+  const fetchRealJobs = async () => {
+    setIsLoadingJobs(true);
+    try {
+      const response = await fetch("http://localhost:5000/api/jobs?q=Cloud");
+      const data = await response.json();
+      if (data.data) {
+        // Map backend dummy/real data format to frontend UI format
+        const fetchedJobs = data.data.map(job => ({
+           title: job.title || job.role,
+           company: job.company,
+           tags: [job.location || 'Remote', 'Trending'],
+           salary: job.salary
+        }));
+        setRecommendedJobs(fetchedJobs);
+      }
+    } catch(err) {
+      console.error("Failed to fetch jobs", err);
+    }
+    setIsLoadingJobs(false);
+  };
+
   // --- Activities State ---
   const [activities, setActivities] = useState([
     { id: 1, type: 'Sports', name: 'Cricket Team', role: 'Captain', performance: 'Excellent' },
@@ -111,10 +140,10 @@ function StudentDashboard() {
   const calculatePercentage = (marks, total) => ((marks / total) * 100).toFixed(1);
 
   const tabs = [
-    { id: 'overview', name: '🏠 Overview', icon: '👤' },
-    { id: 'academics', name: '📚 Academics', icon: '📝' },
-    { id: 'career', name: '🚀 Skills & Career', icon: '💼' },
-    { id: 'activities', name: '🏅 Activities', icon: '🎭' },
+    { id: 'overview', name: 'Overview', icon: '👤' },
+    { id: 'academics', name: 'Academics', icon: '📚' },
+    { id: 'career', name: 'Skills & Career', icon: '🚀' },
+    { id: 'activities', name: 'Activities', icon: '🏅' },
   ];
 
   return (
@@ -386,16 +415,21 @@ function StudentDashboard() {
 
             {/* Jobs Section */}
             <div className="card">
-                <div className="flex justify-between items-center mb-8">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                     <h3 className="text-2xl font-black text-white">Recommended Jobs & Internships</h3>
-                    <Link to="/jobs" className="text-sky-400 text-sm font-bold hover:underline">View Job Portal →</Link>
+                    <div className="flex gap-4 items-center">
+                      <button 
+                        onClick={fetchRealJobs}
+                        disabled={isLoadingJobs}
+                        className="btn-outline !py-1.5 !px-4 !text-xs !rounded-lg border-sky-500/30 text-sky-400 hover:bg-sky-500/10"
+                      >
+                        {isLoadingJobs ? 'Fetching...' : '🔄 Load Live Jobs'}
+                      </button>
+                      <Link to="/jobs" className="text-sky-400 text-sm font-bold hover:underline">View Job Portal →</Link>
+                    </div>
                 </div>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {[
-                        { title: 'Frontend Developer Intern', company: 'Google', tags: ['React', 'CSS'], salary: '$120k' },
-                        { title: 'Cloud Associate', company: 'Amazon', tags: ['AWS', 'Linux'], salary: '$140k' },
-                        { title: 'AI Research Assistant', company: 'NVIDIA', tags: ['Python', 'ML'], salary: '$110k' },
-                    ].map((job, i) => (
+                    {recommendedJobs.map((job, i) => (
                         <div key={i} className="p-6 rounded-3xl bg-slate-900/50 border border-slate-800 hover:border-emerald-500/30 transition-all group">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="h-12 w-12 rounded-xl bg-slate-800 flex items-center justify-center text-xl font-bold text-white">{job.company[0]}</div>

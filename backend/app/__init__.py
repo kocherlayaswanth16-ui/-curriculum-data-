@@ -26,6 +26,15 @@ def create_app(config_name='default'):
     from .routes.users import users_bp
     from .routes.gamification import gamification_bp
     from .routes.market import market_bp
+    from .routes.events import events_bp
+    from .routes.settings import settings_bp
+    
+    # New API ecosystem blueprints
+    from .routes.jobs import jobs_bp
+    from .routes.skills import skills_bp
+    from .routes.recommend import recommend_bp
+    from .routes.trends import trends_bp
+    from .routes.resume import resume_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(syllabus_bp, url_prefix='/api/syllabus')
@@ -33,6 +42,15 @@ def create_app(config_name='default'):
     app.register_blueprint(users_bp, url_prefix='/api/users')
     app.register_blueprint(gamification_bp, url_prefix='/api/gamification')
     app.register_blueprint(market_bp, url_prefix='/api/market')
+    app.register_blueprint(events_bp, url_prefix='/api/events')
+    app.register_blueprint(settings_bp, url_prefix='/api/settings')
+
+    # Register new API ecosystem routes
+    app.register_blueprint(jobs_bp, url_prefix='/api/jobs')
+    app.register_blueprint(skills_bp, url_prefix='/api/skills')
+    app.register_blueprint(recommend_bp, url_prefix='/api/recommend')
+    app.register_blueprint(trends_bp, url_prefix='/api/trends')
+    app.register_blueprint(resume_bp, url_prefix='/api/resume')
 
     # Health check endpoint
     @app.route('/health')

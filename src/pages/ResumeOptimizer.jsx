@@ -5,21 +5,32 @@ const ResumeOptimizer = () => {
   const [score, setScore] = useState(72);
   const [results, setResults] = useState(null);
 
-  const handleOptimize = () => {
+  const handleOptimize = async () => {
     setIsOptimizing(true);
-    setTimeout(() => {
-      setScore(94);
-      setResults({
-        improvements: [
-          "Added keywords: 'Cloud Native', 'Kubernetes', 'CI/CD Pipelines'",
-          "Restructured 'Projects' section for higher ATS readability",
-          "Quantified achievements: 'Improved performance by 40%'",
-        ],
-        missingSkills: ["Terraform", "GoLang (Emerging trend)"],
-        newResumeUrl: "#"
+    try {
+      // Simulate sending file by making a POST request (modify later to append actual file)
+      const formData = new FormData();
+      formData.append('file', new Blob(['dummy content'], { type: 'text/plain' }), 'dummy.txt');
+      
+      const response = await fetch("http://localhost:5000/api/resume", {
+        method: "POST",
+        body: formData
       });
-      setIsOptimizing(false);
-    }, 2000);
+      
+      const data = await response.json();
+      
+      if (data.status === 'success') {
+        setScore(data.ats_score);
+        setResults({
+          improvements: data.suggested_improvements,
+          missingSkills: data.weaknesses,
+          newResumeUrl: "#"
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching AI optimization:", error);
+    }
+    setIsOptimizing(false);
   };
 
   return (
