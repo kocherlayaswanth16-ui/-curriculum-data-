@@ -24,11 +24,15 @@ def create_app(config_name='default'):
     from .routes.syllabus import syllabus_bp
     from .routes.analytics import analytics_bp
     from .routes.users import users_bp
+    from .routes.gamification import gamification_bp
+    from .routes.market import market_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(syllabus_bp, url_prefix='/api/syllabus')
     app.register_blueprint(analytics_bp, url_prefix='/api/analytics')
     app.register_blueprint(users_bp, url_prefix='/api/users')
+    app.register_blueprint(gamification_bp, url_prefix='/api/gamification')
+    app.register_blueprint(market_bp, url_prefix='/api/market')
 
     # Health check endpoint
     @app.route('/health')

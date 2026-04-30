@@ -1,8 +1,15 @@
-cd "c:\Users\koche\OneDrive\Documents\student curcularm"
-npm installcd "c:\Users\koche\OneDrive\Documents\student curcularm"
-npm installcd "c:\Users\koche\OneDrive\Documents\student curcularm\backend"
-python -m pip install -r requirements.txtcd "c:\Users\koche\OneDrive\Documents\student curcularm"
-npm installnode_modules
+node_modules
 dist
-.DS_Store
+dist-ssr
+*.local
 .env
+.env.*
+.DS_Store
+
+# Backend
+backend/venv
+backend/__pycache__
+backend/instance
+*.sqlite3
+backend/uploads
+backend/.env

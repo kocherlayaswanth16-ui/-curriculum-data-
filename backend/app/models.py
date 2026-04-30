@@ -75,13 +75,27 @@ class Subject(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Relationships
-    topics = db.relationship('Topic', backref='subject', lazy=True, cascade='all, delete-orphan')
+    modules = db.relationship('Module', backref='subject', lazy=True, cascade='all, delete-orphan')
+
+class Module(db.Model):
+    __tablename__ = 'modules'
+
+    id = db.Column(db.Integer, primary_key=True)
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)
+    name = db.Column(db.String(200), nullable=False)
+    order = db.Column(db.Integer)  # To maintain sequence (Unit 1, Unit 2, etc.)
+    description = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relationships
+    topics = db.relationship('Topic', backref='module', lazy=True, cascade='all, delete-orphan')
+    skills = db.relationship('Skill', secondary='module_skill_mapping', backref='modules')
 
 class Topic(db.Model):
     __tablename__ = 'topics'
 
     id = db.Column(db.Integer, primary_key=True)
-    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)
+    module_id = db.Column(db.Integer, db.ForeignKey('modules.id'), nullable=False)
     name = db.Column(db.String(300), nullable=False)
     description = db.Column(db.Text)
     relevance_score = db.Column(db.Float, default=0.0)
@@ -89,6 +103,14 @@ class Topic(db.Model):
     replacement_suggestion = db.Column(db.Text)
     industry_demand = db.Column(db.Float, default=0.0)  # 0-100 scale
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class ModuleSkillMapping(db.Model):
+    __tablename__ = 'module_skill_mapping'
+
+    module_id = db.Column(db.Integer, db.ForeignKey('modules.id'), primary_key=True)
+    skill_id = db.Column(db.Integer, db.ForeignKey('skills.id'), primary_key=True)
+    industry_tag = db.Column(db.String(100))  # e.g., 'AI', 'Web Dev'
+    relevance_weight = db.Column(db.Float, default=1.0)
 
 class Syllabus(db.Model):
     __tablename__ = 'syllabi'
@@ -148,3 +170,54 @@ class Analytics(db.Model):
 
     # Relationships
     department = db.relationship('Department', backref='analytics')
+
+class UserStats(db.Model):
+    __tablename__ = 'user_stats'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True, nullable=False)
+    points = db.Column(db.Integer, default=0)
+    level = db.Column(db.Integer, default=1)
+    streak_count = db.Column(db.Integer, default=0)
+    last_activity_date = db.Column(db.Date)
+    badges = db.Column(db.JSON)  # List of badge names/IDs
+    achievements = db.Column(db.JSON)  # Detailed achievements list
+    
+    # Relationships
+    user = db.relationship('User', backref=db.backref('stats', uselist=False))
+
+class Mentorship(db.Model):
+    __tablename__ = 'mentorships'
+
+    id = db.Column(db.Integer, primary_key=True)
+    mentor_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    mentee_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    status = db.Column(db.Enum('pending', 'active', 'completed', 'rejected'), default='pending')
+    focus_area = db.Column(db.String(200))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    mentor = db.relationship('User', foreign_keys=[mentor_id], backref='mentorships_as_mentor')
+    mentee = db.relationship('User', foreign_keys=[mentee_id], backref='mentorships_as_mentee')
+
+class ObsolescenceTrend(db.Model):
+    __tablename__ = 'obsolescence_trends'
+
+    id = db.Column(db.Integer, primary_key=True)
+    skill_name = db.Column(db.String(200), nullable=False)
+    current_relevance = db.Column(db.Float)  # 0-100
+    predicted_relevance_1yr = db.Column(db.Float)
+    predicted_relevance_2yr = db.Column(db.Float)
+    status = db.Column(db.Enum('rising', 'stable', 'declining', 'obsolete'), default='stable')
+    replacement_suggestion = db.Column(db.String(200))
+    last_updated = db.Column(db.DateTime, default=datetime.utcnow)
+
+class LearningActivity(db.Model):
+    __tablename__ = 'learning_activities'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    activity_type = db.Column(db.String(100))  # quiz, course_complete, syllabus_upload
+    score = db.Column(db.Float)
+    difficulty = db.Column(db.Enum('beginner', 'intermediate', 'advanced'))
+    completed_at = db.Column(db.DateTime, default=datetime.utcnow)

@@ -11,7 +11,7 @@ function NavbarEnhanced() {
   };
 
   const getRoleIcon = (role) => {
-    const icons = { student: '👨‍🎓', faculty: '👨‍🏫', hod: '👨‍💼', admin: '⚙️' };
+    const icons = { student: '👨‍🎓', faculty: '👨‍🏫', hod: '👨‍💼', admin: '⚙️', 'job-tracer': '🔍' };
     return icons[role] || '👤';
   };
 
@@ -21,6 +21,7 @@ function NavbarEnhanced() {
       faculty: 'text-purple-300',
       hod: 'text-amber-300',
       admin: 'text-rose-300',
+      'job-tracer': 'text-emerald-300',
     };
     return colors[role] || 'text-slate-300';
   };
@@ -31,24 +32,33 @@ function NavbarEnhanced() {
           { label: 'Dashboard', to: '/dashboard/student' },
           { label: 'My Roadmap', to: '/roadmap' },
           { label: 'Skills Gap', to: '/skills-gap' },
+          { label: 'Job Tracker', to: '/job-tracker' },
+          { label: 'Jobs', to: '/jobs' },
         ]
       : user.role === 'faculty'
         ? [
             { label: 'Dashboard', to: '/dashboard/faculty' },
-            { label: 'Manage Subjects', to: '/manage-subjects' },
             { label: 'Upload Syllabus', to: '/upload-syllabus' },
+            { label: 'Student Lookup', to: '/student-lookup' },
           ]
         : user.role === 'hod'
           ? [
               { label: 'Dashboard', to: '/dashboard/hod' },
-              { label: 'Department Analytics', to: '/department-analytics' },
-              { label: 'Curriculum Planning', to: '/curriculum-planning' },
+              { label: 'Curriculum Analysis', to: '/upload-syllabus' },
+              { label: 'Market Intelligence', to: '/market-intelligence' },
             ]
-          : [
-              { label: 'Dashboard', to: '/dashboard/admin' },
-              { label: 'Users', to: '/manage-users' },
-              { label: 'System Settings', to: '/settings' },
-            ]
+          : user.role === 'job-tracer'
+            ? [
+                { label: 'Market Trends', to: '/market-intelligence' },
+                { label: 'Job Tracker', to: '/job-tracker' },
+                { label: 'Job Portal', to: '/jobs' },
+                { label: 'Skill Analysis', to: '/analytics' },
+              ]
+            : [
+                { label: 'Dashboard', to: '/dashboard/admin' },
+                { label: 'Analytics', to: '/analytics' },
+                { label: 'Upload', to: '/upload' },
+              ]
     : [];
 
   return (

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import ChartBox from '../components/ChartBox.jsx';
 import StatCard from '../components/StatCard.jsx';
 
@@ -134,7 +135,12 @@ function SkillsGapAnalysis() {
 
       {/* Learning Roadmap */}
       <div className="card">
-        <h3 className="mb-6 text-2xl font-semibold text-white">Your Learning Roadmap</h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-2xl font-semibold text-white">Your Learning Roadmap</h3>
+          <Link to="/roadmap" className="rounded-full bg-sky-500/10 px-4 py-2 text-sm font-semibold text-sky-400 border border-sky-500/20 hover:bg-sky-500/20 transition-all">
+            Full AI Roadmap →
+          </Link>
+        </div>
         <div className="space-y-4">
           {learningRoadmap.map((item) => (
             <div key={item.quarter} className="rounded-xl border border-slate-800 bg-slate-950/50 p-4">
